@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revision Website</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'SF Pro Display', sans-serif;
+        }
+
+        /* Overlay Styles */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+            z-index: 10;
+            justify-content: center;
+            align-items: center;
+            overflow: auto; /* Enable scrolling if content is too long */
+            opacity: 0;          /* Initial opacity for fade-in */
+            transition: opacity 0.3s ease-in-out; /* Fade-in transition */
+        }
+
+        .overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .overlay-content {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow-y: auto; /* Enable vertical scrolling within the content */
+            max-height: 80vh; /* Limit the maximum height of the content */
+        }
+
+        .overlay-content h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            color: #1e293b;
+            text-align: center;
+        }
+
+        .overlay-content ul {
+            list-style: none;
+            margin-bottom: 0;
+        }
+
+        .overlay-content li {
+            margin-bottom: 1rem;
+        }
+
+        .overlay-content a {
+            display: block;
+            padding: 0.75rem 1rem;
+            border-radius: 0.375rem;
+            color: #374151;
+            text-decoration: none;
+            transition: background-color 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .overlay-content a:hover {
+            background-color: #f3f4f6;
+            border-color: #e5e7eb;
+        }
+
+        .overlay-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.25rem;
+            color: #6b7280;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .overlay-close:hover {
+            color: #1f2937;
+        }
+
+        .subject-button {
+            border-radius: 0.75rem;
+            padding: 1rem;
+            text-align: center;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            white-space: nowrap; /* Prevent text wrapping */
+            overflow: hidden;        /* Ensure any overflowing text is hidden */
+        }
+
+        .subject-button:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .subject-button span {
+            margin-right: 0.5rem;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 flex justify-center items-start min-h-screen pt-12">
+    <div class="container bg-white rounded-lg shadow-md p-8 w-4/5 max-w-2xl">
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <button data-overlay="it-overlay" style="background-color: #f0f3f4; color: #666666;" class="subject-button hover:bg-f4f6f7">
+                <span class="mr-2">💻</span> IT
+            </button>
+            <button data-overlay="history-overlay" style="background-color: #decebf; color: #403b37;" class="subject-button hover:bg-e8d8c9">
+                <span class="mr-2">📜</span> History
+            </button>
+            <button data-overlay="technology-overlay" style="background-color: #fdefe2; color: #fc7f0a;" class="subject-button hover:bg-feeae8">
+                <span class="mr-2">🛠️</span> Technology
+            </button>
+            <button data-overlay="science-overlay" style="background-color: #fef7e0; color: #fcc40a;" class="subject-button hover:bg-fefbe6">
+                <span class="mr-2">🔬</span> Science
+            </button>
+            <button data-overlay="geography-overlay" style="background-color: #e6f4ea; color: #016f38;" class="subject-button hover:bg-edf7ed">
+                <span class="mr-2">🌍</span> Geography
+            </button>
+            <button data-overlay="home-economics-overlay" style="background-color: #e5f7fb; color: #007787;" class="subject-button hover:bg-eafafa">
+                <span class="mr-2">🍳</span> Home Economics
+            </button>
+            <button data-overlay="french-overlay" style="background-color: #e7f0fe; color: #006bd3;" class="subject-button hover:bg-edf4ff">
+                <span class="mr-2">🥖</span> French
+            </button>
+            <button data-overlay="religion-overlay" style="background-color: #f3e8fd; color: #8625ca;" class="subject-button hover:bg-f7f0fa">
+                <span class="mr-2">⛪</span> Religion
+            </button>
+            <button data-overlay="english-overlay" style="background-color: #fde7f3; color: #b7076c;" class="subject-button hover:bg-fbebf7">
+                <span class="mr-2">📚</span> English
+            </button>
+        </div>
+    </div>
+
+    <div id="home-economics-overlay" class="overlay">
+        <div class="overlay-content">
+            <span class="overlay-close">✖</span>
+            <h2>Home Economics</h2>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/a30cee4a-d1e7-46e3-a335-72e1550abda9">Home Economics</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="history-overlay" class="overlay">
+        <div class="overlay-content">
+            <span class="overlay-close">✖</span>
+            <h2>History</h2>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/1388aecc-f527-4db4-b090-5a2aceea6727">History</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="geography-overlay" class="overlay">
+        <div class="overlay-content">
+            <span class="overlay-close">✖</span>
+            <h2>Geography</h2>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/b6df1753-35ce-473a-8605-857dc62f342f">Geography</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="technology-overlay" class="overlay">
+        <div class="overlay-content">
+            <span class="overlay-close">✖</span>
+            <h2>Technology</h2>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/3d7de787-3857-49fd-871b-aff1b45c7127">Techniques</a></li>
+                <li><a href="https://knowt.com/flashcards/c0cf616a-45e8-4a8a-9b58-1a9509c0d26c">Safety</a></li>
+                <li><a href="https://knowt.com/flashcards/3238a1c4-1d9b-4e7a-9ec9-da9b42019ebc">Materials</a></li>
+                <li><a href="https://knowt.com/flashcards/aa7dae39-28ad-4734-bdac-0db78537ad67">Equipment</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="science-overlay" class="overlay">
+        <div class="overlay-content">
+            <span class="overlay-close">✖</span>
+            <h2>Science</h2>
+            <h3>Physics</h3>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/5c0a6677-1324-40bc-bee7-42ed88dd00a3">Heat Transfer</a></li>
+                <li><a href="https://knowt.com/flashcards/825962b3-0d59-4701-8fe3-b2a99ba1786e">Electrical Circuits</a></li>
+            </ul>
+            <h3>Chemistry</h3>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/235a05ae-4630-463f-a8dd-575805b4e19b">Subatomic Particles</a></li>
+                <li><a href="https://knowt.com/flashcards/935bbe8a-dbf0-40f9-b2f7-23683c86febc">Chemical Reactions</a></li>
+            </ul>
+            <h3>Biology</h3>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/3fcff9a3-81bc-45c8-8e69-11e97f6c2128">Photosynthesis</a></li>
+                <li><a href="https://knowt.com/flashcards/9b26c133-d809-4914-8b5b-c52ee806992a">Food and Digestion</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="religion-overlay" class="overlay">
+        <div class="overlay-content">
+            <span class="overlay-close">✖</span>
+            <h2>Religion</h2>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/4480f9b6-5a33-4047-9251-9b7cb82d73de">World Religions</a></li>
+                <li><a href="https://knowt.com/flashcards/0b21e316-75a8-45c0-9168-6f3d08f180e3">Life of Jesus</a></li>
+                <li><a href="https://knowt.com/flashcards/ca1348a4-0791-412e-b841-50bbb85b8ead">Helping Others</a></li>
+                <li><a href="https://knowt.com/flashcards/ab6fc03e-a9a9-40ed-b5e7-3352fc832b7d">Contemporary Issues</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="it-overlay" class="overlay">
+        <div class="overlay-content">
+            <span class="overlay-close">✖</span>
+            <h2>IT</h2>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/2b21252b-f5ff-4895-a96c-5154ffcfe95f">Website Planning</a></li>
+                <li><a href="https://knowt.com/flashcards/e0fdcd97-c5c8-4e56-98c5-d59dcfdfd068">HTML Tags</a></li>
+                <li><a href="https://knowt.com/flashcards/d4dea228-63d9-43d0-bfd0-4d64d95aeaca">Gamemaker</a></li>
+                <li><a href="https://knowt.com/flashcards/7c53039e-4f20-4e47-bbcb-19f6c7ea145e">Digital Applications</a></li>
+                <li><a href="https://knowt.com/flashcards/d3cae281-54a3-415b-89fc-365963decc01">Binary/ C# Programming</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="french-overlay" class="overlay">
+        <div class="overlay-content">
+            <span class="overlay-close">✖</span>
+            <h2>French</h2>
+            <h3>Préférences</h3>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/e1c6d50f-af83-4d79-ba64-b736eff42343">La musique</a></li>
+                <li><a href="https://knowt.com/flashcards/c7f999f3-ae7c-4706-a0fe-b68dcaeb82e3">J'aime</a></li>
+                <li><a href="https://knowt.com/flashcards/7073d50d-f899-4668-9be8-16d1b5cf3617">Ce weekend</a></li>
+            </ul>
+            <h3>Moi et mes ami</h3>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/fb4d3612-bd6c-4a75-abd6-8988698c1cb4">Ma bande des copains</a></li>
+                <li><a href="https://knowt.com/flashcards/494e95a6-cf21-4db5-8ead-2aa075aad1eb">Les vêtements</a></li>
+            </ul>
+            <h3>Les touristes</h3>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/a1b4c1f6-df90-4123-9d46-b40e8477dd62">Qu'est-ce qu'on peut faire?</a></li>
+            </ul>
+        </div>
+    </div>
+    
+     <div id="english-overlay" class="overlay">
+        <div class="overlay-content">
+            <span class="overlay-close">✖</span>
+            <h2>English</h2>
+            <ul>
+                <li><a href="https://knowt.com/flashcards/a489756e-9a96-47ba-a8a3-c06160a01074">Language Devices</a></li>
+                <li><a href="https://knowt.com/flashcards/210ca973-5bd5-4789-b7f7-d9e895e87ce1">Colour Theory</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const subjectButtons = document.querySelectorAll('.subject-button');
+        const overlays = document.querySelectorAll('.overlay');
+        const overlayCloses = document.querySelectorAll('.overlay-close');
+
+        subjectButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const overlayId = button.dataset.overlay;
+                const overlay = document.getElementById(overlayId);
+                overlay.classList.add('active'); // Show with fade
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        overlayCloses.forEach(close => {
+            close.addEventListener('click', () => {
+                const overlay = close.closest('.overlay');
+                overlay.classList.remove('active'); // Hide with fade
+                document.body.style.overflow = '';
+            });
+        });
+
+        window.addEventListener('click', (event) => {
+            overlays.forEach(overlay => {
+                if (event.target === overlay) {
+                    overlay.classList.remove('active'); // Hide with fade
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+    });
+    </script>
+</body>
+</html>
